@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import {getMovies} from '../services/fakeMovieService';
 import Like from '../common/like';
+import Pagination from '../common/pagination';
+import { pagination} from '../utils/paginate';
 
 class Movies extends Component {
     state = {  
-        movies:getMovies()
+        movies:getMovies(),
+        currentPage:1,
+        pageSize:4
     } 
 
     handleDelete = (movie) =>{
@@ -17,7 +21,7 @@ class Movies extends Component {
       Now in js, if the key and value are the same, we can remove the repeattion, so we only pass movie one time*/
       this.setState({movies})
 
-    }
+    };
 
     handleLike =(movie)=>{
         const movies =[...this.state.movies];
@@ -26,9 +30,15 @@ class Movies extends Component {
         movies[index].liked = !movies[index].liked;
         this.setState({movies});
 
-    }
+    };
+
+    handlePageChange =page =>{
+        this.setState({currentPage:page});
+    };
     render() { 
         const {length: count } =this.state.movies;
+        const{pageSize, currentPage, movies:allMovies} = this.state;
+
         if(count===0)return <p>There are no movies in the database</p>;
         /*fast way to generate a table, by writing this:
          table.table>thead>tr>th*4
@@ -44,6 +54,7 @@ class Movies extends Component {
          every time you use the map we should set the key attribute, or the key property 
          on the element that you are repeating 
         */
+       const movies = pagination(allMovies, currentPage, pageSize)
         return (
             <React.Fragment>
                  <p>Showing {count} movie in database</p>
@@ -61,7 +72,7 @@ class Movies extends Component {
     
 </thead>
 <tbody>
-{this.state.movies.map(movie=>(
+{movies.map(movie=>(
      <tr key={movie._id}> 
      <td>{movie.title}</td>
      <td>{movie.genre.name}</td>
@@ -77,6 +88,11 @@ class Movies extends Component {
 </tbody>
 
 </table>
+<Pagination 
+itemsCount={count} 
+pageSize={pageSize} 
+currentPage ={currentPage}
+onPageChange={this.handlePageChange}/>
 
  </React.Fragment>
            
