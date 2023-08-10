@@ -19,7 +19,7 @@ const Form = () => {
     const {
         register, 
         handleSubmit, 
-        formState: {errors}
+        formState: {errors, isValid}
         /*
         on line 19 we call the useForm-hook and pass the interface, 
         this securee automcomplete when writting errors on line 33 and 34
@@ -51,7 +51,7 @@ const Form = () => {
           {errors.age && <p className='text-danger'>{errors.age.message}</p>}
      
       </div>
-      <button className="btn btn-primary" type="submit">Submit</button>
+      <button disabled = {!isValid}className="btn btn-primary" type="submit">Submit</button>
 
       </form>
       
