@@ -7,7 +7,7 @@ const schema = z.object({
     name:z.string().min(3, {message:"name must be at least 3 charachters"}),
     age: z.number( {invalid_type_error:"Agefield is required"}).min(18, {message:"age must be at least 18"})
 })
-/* on line14: this returns a typescript type, which is similar to an interface. so using type we can deinfe a shape.
+/* on line15: this returns a typescript type, which is similar to an interface. so using type we can deinfe a shape.
 
 We need to instal hookform/resolvers library, which include resolvers 
 for various schema-based validation-librarys like zod, yup, joi etc.
