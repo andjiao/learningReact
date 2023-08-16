@@ -57,6 +57,20 @@ function App(){
     })
   }
 
+  const updateUser = (user:User) =>{
+    const originalUsers = [...users]
+    const updatedUser = {...user, name:user.name + "!"}
+    setUsers(users.map(u => u.id === user.id ? updatedUser : u))
+
+    axios.patch("https://jsonplaceholder.typicode.com/users/" + user.id, updateUser)
+    .catch (err =>{
+      setError(err.message)
+      setUsers(originalUsers)
+
+    })
+
+  }
+
  
   return (
     <>
@@ -69,9 +83,18 @@ function App(){
      key ={user.id} 
      className="list-group-item d-flex justify-content-between">
        {user.name}
+       <div>
+         <button 
+         className="btn btn-outline-secondary mx-1" 
+         onClick={() => updateUser(user)}>
+                Update
+              </button>
      <button
      onClick={()=> deleteUser(user)} 
-     className="btn btn-outline-danger">Delete</button></li>)}
+     className="btn btn-outline-danger">Delete</button>
+       </div>
+        
+     </li>)}
    </ul>
     </>
        
