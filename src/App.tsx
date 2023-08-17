@@ -14,7 +14,7 @@ function App(){
     
 
     setIsLoading(true)
-    const { request, cancel} = userService.getAllUsers()
+    const { request, cancel} = userService.getAll<User>()
     request.then(res => {
       setUsers(res.data)
     setIsLoading(false)
@@ -33,7 +33,7 @@ function App(){
     const originalUsers = [...users]
     setUsers(users.filter(u => u.id !== user.id))
 
-    userService.deleteUser(user.id)
+    userService.delete(user.id)
     .catch(err => {
       setError(err.message)
       setUsers(originalUsers)
@@ -46,7 +46,7 @@ function App(){
     const newUser = {id:0, name: "Andrea"}
     setUsers([newUser, ...users])
 
-    userService.createUser(newUser)
+    userService.create(newUser)
     .then(({data:savedUser}) => setUsers([savedUser, ...users])) // savedUser is an alias for data
     .catch((err) =>{
       setError(err.message)
@@ -60,7 +60,7 @@ function App(){
     const updatedUser = {...user, name:user.name + "!"}
     setUsers(users.map(u => u.id === user.id ? updatedUser : u))
 
-    userService.updateUser(updatedUser)
+    userService.update(updatedUser)
     .catch (err =>{
       setError(err.message)
       setUsers(originalUsers)
